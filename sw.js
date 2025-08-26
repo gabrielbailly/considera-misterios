@@ -1,17 +1,17 @@
 // --- Service Worker para la PWA del Santo Rosario ---
 
 // Versión del caché. Cambia este valor si actualizas los archivos para forzar la actualización.
-const CACHE_NAME = 'santo-rosario-cache-v1';
+const CACHE_NAME = 'santo-rosario-cache-v2'; // Se incrementó la versión para forzar actualización
 
 // Archivos que se guardarán en el caché para que la app funcione sin conexión.
 const urlsToCache = [
   './', // La página principal
   './manifest.json', // El manifiesto de la app
-  // Los audios son cruciales para la experiencia sin conexión
-  'https://gabrielbailly-25.github.io/considera-misterios/audios/gozosos.m4a',
-  'https://gabrielbailly-25.github.io/considera-misterios/audios/luminosos.m4a',
-  'https://gabrielbailly-25.github.io/considera-misterios/audios/dolorosos.m4a',
-  'https://gabrielbailly-25.github.io/considera-misterios/audios/gloriosos.m4a'
+  // Los audios son cruciales para la experiencia sin conexión (RUTAS CORREGIDAS)
+  'https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/gozosos.m4a',
+  'https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/luminosos.m4a',
+  'https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/dolorosos.m4a',
+  'https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/gloriosos.m4a'
 ];
 
 // Evento 'install': Se dispara cuando el Service Worker se instala.
@@ -37,6 +37,7 @@ self.addEventListener('activate', event => {
         cacheNames.map(cacheName => {
           // Si el nombre del caché no está en nuestra lista blanca, lo borramos.
           if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Borrando caché antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })

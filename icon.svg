@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fondo del icono -->
+    <rect width="512" height="512" rx="90" fill="#0f172a"/>
+
+    <!-- Cruz central con degradado -->
+    <defs>
+        <linearGradient id="crossGradient" x1="256" y1="100" x2="256" y2="412" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#38bdf8"/>
+            <stop offset="1" stop-color="#0ea5e9"/>
+        </linearGradient>
+    </defs>
+    
+    <!-- Sombra suave para dar profundidad -->
+    <path d="M224 100 H288 V224 H412 V288 H288 V412 H224 V288 H100 V224 H224 V100 Z" fill="black" fill-opacity="0.2" transform="translate(4, 4)"/>
+
+    <!-- La cruz -->
+    <path d="M224 100 H288 V224 H412 V288 H288 V412 H224 V288 H100 V224 H224 V100 Z" fill="url(#crossGradient)"/>
+</svg>
