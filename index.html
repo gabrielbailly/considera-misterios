@@ -17,7 +17,9 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
 
-    <!-- Apple Touch Icons (para que se vea bien en iPhone) -->
+    <!-- Apple PWA settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
     <style>
@@ -106,7 +108,7 @@
 
         <!-- Pie de página -->
         <footer class="mt-12 pt-8 border-t border-slate-700 text-center text-sm text-slate-400">
-            <p class="mb-4">Grabación realizada por Gabriel Bailly-Bailliere Torres-Pardo (agosto 2025).</p>
+            <p class="mb-4">Grabación realizada por Gabriel Bailly-Bailliere Torres-Pardo.</p>
             <div>
                 <h4 class="font-semibold text-slate-300 mb-2">Música de fondo utilizada</h4>
                 <ul class="space-y-1">
@@ -120,7 +122,7 @@
 
     </div>
 
-    <!-- Banner de Instalación PWA -->
+    <!-- Banner de Instalación PWA (para Android/Chrome) -->
     <div id="install-banner" class="hidden fixed bottom-0 left-0 right-0 bg-sky-600 text-white p-4 text-center flex justify-center items-center gap-4 z-50 shadow-lg">
         <p class="text-sm sm:text-base">Añadir a pantalla de inicio para acceso rápido.</p>
         <button id="install-button" class="bg-white text-sky-700 font-bold py-2 px-4 rounded-lg hover:bg-slate-200 transition-colors">
@@ -128,24 +130,26 @@
         </button>
     </div>
 
+    <!-- Banner de Instalación PWA (para iOS/Safari) -->
+    <div id="ios-install-banner" class="hidden fixed bottom-0 left-0 right-0 bg-slate-800 text-white p-4 text-center z-50 shadow-lg">
+        <p class="text-sm sm:text-base">Para instalar, pulsa el botón <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block -mt-1" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg> Compartir y luego "Añadir a pantalla de inicio".</p>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Lógica del reproductor de audio (sin cambios)
             const audioPlayer = document.getElementById('main-audio-player');
             const nowPlaying = document.getElementById('now-playing');
             const playButtons = document.querySelectorAll('.play-btn');
-            const mysteryCards = document.querySelectorAll('.mystery-card');
             let currentPlayingButton = null;
 
             playButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const audioSrc = button.dataset.src;
-                    const audioTitle = button.dataset.title;
-                    
                     if (button === currentPlayingButton) {
                         audioPlayer.pause();
                         return;
                     }
-
                     while (audioPlayer.firstChild) {
                         audioPlayer.removeChild(audioPlayer.firstChild);
                     }
@@ -153,16 +157,14 @@
                     source.src = audioSrc;
                     source.type = 'audio/mp4'; 
                     audioPlayer.appendChild(source);
-                    
                     audioPlayer.load();
-                    audioPlayer.play().catch(e => console.error("Error al intentar reproducir el audio:", e));
+                    audioPlayer.play().catch(e => console.error("Error al reproducir audio:", e));
                 });
             });
 
             audioPlayer.addEventListener('play', () => {
                 const currentSrc = audioPlayer.querySelector('source').src;
                 const playingButton = Array.from(playButtons).find(btn => btn.dataset.src === currentSrc);
-
                 if(playingButton && playingButton !== currentPlayingButton) {
                     if (currentPlayingButton) {
                         currentPlayingButton.classList.remove('bg-green-500', 'hover:bg-green-400');
@@ -170,7 +172,6 @@
                         currentPlayingButton.textContent = currentPlayingButton.dataset.title.split(' ')[1];
                         currentPlayingButton.closest('.mystery-card').classList.remove('ring-2', 'ring-sky-500');
                     }
-                    
                     playingButton.classList.remove('bg-sky-600', 'hover:bg-sky-500');
                     playingButton.classList.add('bg-green-500', 'hover:bg-green-400');
                     playingButton.textContent = 'Reproduciendo...';
@@ -207,49 +208,59 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado con éxito:', registration);
-                    })
-                    .catch(error => {
-                        console.log('Error al registrar el Service Worker:', error);
-                    });
+                    .then(registration => console.log('Service Worker registrado con éxito.'))
+                    .catch(error => console.log('Error al registrar el Service Worker:', error));
             });
         }
 
         // --- Lógica para el banner de instalación de la PWA ---
+        
+        // Función para detectar si es un dispositivo iOS
+        const isIOS = () => {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        }
+        
+        // Función para detectar si la app está en modo PWA (pantalla completa)
+        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+        // Si es iOS y no está en modo PWA, muestra el banner de instrucciones para iOS
+        if (isIOS() && !isInStandaloneMode()) {
+            const iosInstallBanner = document.getElementById('ios-install-banner');
+            iosInstallBanner.classList.remove('hidden');
+        }
+
+        // Lógica para Android/Chrome
         let deferredPrompt;
         const installBanner = document.getElementById('install-banner');
         const installButton = document.getElementById('install-button');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Previene que el navegador muestre el prompt automáticamente
-            e.preventDefault();
-            // Guarda el evento para que pueda ser disparado más tarde.
-            deferredPrompt = e;
-            // Muestra nuestro banner de instalación personalizado
-            installBanner.classList.remove('hidden');
+            // Solo muestra el banner si no es iOS
+            if (!isIOS()) {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBanner.classList.remove('hidden');
+            }
         });
 
-        installButton.addEventListener('click', (e) => {
-            // Oculta nuestro banner
-            installBanner.classList.add('hidden');
-            // Muestra el prompt de instalación
-            deferredPrompt.prompt();
-            // Espera a que el usuario responda al prompt
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('El usuario aceptó instalar la PWA');
-                } else {
-                    console.log('El usuario rechazó instalar la PWA');
-                }
-                deferredPrompt = null;
+        if(installButton){
+            installButton.addEventListener('click', (e) => {
+                installBanner.classList.add('hidden');
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('El usuario aceptó instalar la PWA');
+                    } else {
+                        console.log('El usuario rechazó instalar la PWA');
+                    }
+                    deferredPrompt = null;
+                });
             });
-        });
+        }
 
-        // Escuchar cuando la PWA ha sido instalada
         window.addEventListener('appinstalled', (evt) => {
             console.log('PWA fue instalada');
-            // Oculta el banner si todavía está visible
             installBanner.classList.add('hidden');
             deferredPrompt = null;
         });
