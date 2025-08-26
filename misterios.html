@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santo Rosario - Consideración de los misterios</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Apple Touch Icons (para que se vea bien en iPhone) -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <style>
+        /* Estilo personalizado para usar la fuente Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Evita el destello azul en móviles al tocar */
+        }
+        /* Estilo para la barra de desplazamiento */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8; /* sky-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0ea5e9; /* sky-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-6xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold text-sky-400 tracking-tight">Santo Rosario</h1>
+            <p class="text-slate-400 mt-2">Consideración de los misterios</p>
+            <p class="text-slate-300 mt-4 max-w-3xl mx-auto text-balance">Audios breves basados en textos de san Josemaría para ayudar a hacer la consideración de los misterios del rosario (agosto 2025).</p>
+        </header>
+
+        <!-- Reproductor de Audio Fijo -->
+        <div id="audio-player-container" class="sticky top-4 z-10 bg-slate-800/50 backdrop-blur-lg p-4 rounded-xl shadow-2xl mb-8 border border-slate-700">
+            <p class="text-sm text-slate-400 mb-2">Reproduciendo ahora:</p>
+            <h3 id="now-playing" class="text-lg font-semibold text-white truncate">Ninguno</h3>
+            <audio id="main-audio-player" controls class="w-full mt-2"></audio>
+        </div>
+
+        <!-- Grid de Misterios -->
+        <main class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+
+            <!-- Misterios Gozosos -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+                <button 
+                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    data-src="https://gabrielbailly-25.github.io/considera-misterios/audios/gozosos.m4a"
+                    data-title="Misterios Gozosos">
+                    Gozosos
+                </button>
+            </div>
+
+            <!-- Misterios Luminosos -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+                <button 
+                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    data-src="https://gabrielbailly-25.github.io/considera-misterios/audios/luminosos.m4a"
+                    data-title="Misterios Luminosos">
+                    Luminosos
+                </button>
+            </div>
+
+            <!-- Misterios Dolorosos -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+                <button 
+                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    data-src="https://gabrielbailly-25.github.io/considera-misterios/audios/dolorosos.m4a"
+                    data-title="Misterios Dolorosos">
+                    Dolorosos
+                </button>
+            </div>
+
+            <!-- Misterios Gloriosos -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+                <button 
+                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    data-src="https://gabrielbailly-25.github.io/considera-misterios/audios/gloriosos.m4a"
+                    data-title="Misterios Gloriosos">
+                    Gloriosos
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioPlayer = document.getElementById('main-audio-player');
+            const nowPlaying = document.getElementById('now-playing');
+            const playButtons = document.querySelectorAll('.play-btn');
+            const mysteryCards = document.querySelectorAll('.mystery-card');
+            let currentPlayingButton = null;
+
+            playButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const audioSrc = button.dataset.src;
+                    const audioTitle = button.dataset.title;
+                    
+                    if (button === currentPlayingButton) {
+                        audioPlayer.pause();
+                        return;
+                    }
+
+                    while (audioPlayer.firstChild) {
+                        audioPlayer.removeChild(audioPlayer.firstChild);
+                    }
+                    const source = document.createElement('source');
+                    source.src = audioSrc;
+                    source.type = 'audio/mp4'; 
+                    audioPlayer.appendChild(source);
+                    
+                    audioPlayer.load();
+                    audioPlayer.play().catch(e => console.error("Error al intentar reproducir el audio:", e));
+                });
+            });
+
+            audioPlayer.addEventListener('play', () => {
+                const currentSrc = audioPlayer.querySelector('source').src;
+                const playingButton = Array.from(playButtons).find(btn => btn.dataset.src === currentSrc);
+
+                if(playingButton && playingButton !== currentPlayingButton) {
+                    if (currentPlayingButton) {
+                        currentPlayingButton.classList.remove('bg-green-500', 'hover:bg-green-400');
+                        currentPlayingButton.classList.add('bg-sky-600', 'hover:bg-sky-500');
+                        currentPlayingButton.textContent = currentPlayingButton.dataset.title.split(' ')[1];
+                        currentPlayingButton.closest('.mystery-card').classList.remove('ring-2', 'ring-sky-500');
+                    }
+                    
+                    playingButton.classList.remove('bg-sky-600', 'hover:bg-sky-500');
+                    playingButton.classList.add('bg-green-500', 'hover:bg-green-400');
+                    playingButton.textContent = 'Reproduciendo...';
+                    playingButton.closest('.mystery-card').classList.add('ring-2', 'ring-sky-500');
+                    nowPlaying.textContent = playingButton.dataset.title;
+                    currentPlayingButton = playingButton;
+                }
+            });
+            
+            audioPlayer.addEventListener('pause', () => {
+                if (currentPlayingButton) {
+                    currentPlayingButton.classList.remove('bg-green-500', 'hover:bg-green-400');
+                    currentPlayingButton.classList.add('bg-sky-600', 'hover:bg-sky-500');
+                    currentPlayingButton.textContent = currentPlayingButton.dataset.title.split(' ')[1];
+                    currentPlayingButton.closest('.mystery-card').classList.remove('ring-2', 'ring-sky-500');
+                    currentPlayingButton = null;
+                }
+            });
+            
+            audioPlayer.addEventListener('ended', () => {
+                nowPlaying.textContent = 'Selecciona un misterio';
+            });
+
+            audioPlayer.addEventListener('error', () => {
+                nowPlaying.textContent = `Error al cargar el audio`;
+                console.error(`No se pudo cargar el archivo de audio.`);
+                 if (currentPlayingButton) {
+                    currentPlayingButton.click();
+                }
+            });
+        });
+
+        // --- Registro del Service Worker para la PWA ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar el Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
