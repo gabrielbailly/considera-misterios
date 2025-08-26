@@ -49,7 +49,7 @@
         <header class="text-center mb-8">
             <h1 class="text-4xl sm:text-5xl font-bold text-sky-400 tracking-tight">Santo Rosario</h1>
             <p class="text-slate-400 mt-2">Consideración de los misterios</p>
-            <p class="text-slate-300 mt-4 max-w-3xl mx-auto text-balance">Audios breves basados en textos de san Josemaría para ayudar a hacer la consideración de los misterios del rosario (agosto 2025).</p>
+            <p class="text-slate-300 mt-4 max-w-3xl mx-auto text-balance">Audios breves basados en textos de san Josemaría para ayudar a hacer la consideración de los misterios del rosario.</p>
         </header>
 
         <!-- Reproductor de Audio Fijo -->
@@ -72,16 +72,6 @@
                 </button>
             </div>
 
-            <!-- Misterios Luminosos -->
-            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
-                <button 
-                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
-                    data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/luminosos.m4a"
-                    data-title="Misterios Luminosos">
-                    Luminosos
-                </button>
-            </div>
-
             <!-- Misterios Dolorosos -->
             <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
                 <button 
@@ -89,6 +79,16 @@
                     data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/dolorosos.m4a"
                     data-title="Misterios Dolorosos">
                     Dolorosos
+                </button>
+            </div>
+
+            <!-- Misterios Luminosos -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+                <button 
+                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/luminosos.m4a"
+                    data-title="Misterios Luminosos">
+                    Luminosos
                 </button>
             </div>
 
@@ -103,6 +103,21 @@
             </div>
 
         </main>
+
+        <!-- Pie de página -->
+        <footer class="mt-12 pt-8 border-t border-slate-700 text-center text-sm text-slate-400">
+            <p class="mb-4">Grabación realizada por Gabriel Bailly-Bailliere Torres-Pardo (agosto 2025).</p>
+            <div>
+                <h4 class="font-semibold text-slate-300 mb-2">Música de fondo utilizada</h4>
+                <ul class="space-y-1">
+                    <li>Ave Verum Corpus – Wolfgang Amadeus Mozart</li>
+                    <li>Adagio for Strings – Samuel Barber</li>
+                    <li>Concierto de Brandeburgo n.º 3 (Adagio) – Johann Sebastian Bach</li>
+                    <li>Aleluya, del Oratorio El Mesías – Georg Friedrich Händel</li>
+                </ul>
+            </div>
+        </footer>
+
     </div>
 
     <script>
