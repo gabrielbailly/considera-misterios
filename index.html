@@ -61,43 +61,35 @@
             <audio id="main-audio-player" controls class="w-full mt-2"></audio>
         </div>
 
-        <!-- Grid de Misterios -->
-        <main class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+        <!-- Grid de Misterios (2x2) -->
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
-            <!-- Misterios Gozosos -->
-            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+            <!-- Fila 1 -->
+            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex justify-center items-center gap-4 border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
                 <button 
-                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    class="play-btn flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
                     data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/gozosos.m4a"
                     data-title="Misterios Gozosos">
                     Gozosos
                 </button>
-            </div>
-
-            <!-- Misterios Dolorosos -->
-            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
                 <button 
-                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    class="play-btn flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
                     data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/dolorosos.m4a"
                     data-title="Misterios Dolorosos">
                     Dolorosos
                 </button>
             </div>
 
-            <!-- Misterios Luminosos -->
-            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
+            <!-- Fila 2 -->
+             <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex justify-center items-center gap-4 border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
                 <button 
-                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    class="play-btn flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
                     data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/luminosos.m4a"
                     data-title="Misterios Luminosos">
                     Luminosos
                 </button>
-            </div>
-
-            <!-- Misterios Gloriosos -->
-            <div class="mystery-card bg-slate-800 p-6 rounded-xl shadow-lg flex flex-col justify-center items-center border border-slate-700 transition-all duration-300 hover:border-sky-500/50">
                 <button 
-                    class="play-btn bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
+                    class="play-btn flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75"
                     data-src="https://raw.githubusercontent.com/gabrielbailly/considera-misterios/main/audios/gloriosos.m4a"
                     data-title="Misterios Gloriosos">
                     Gloriosos
@@ -175,7 +167,6 @@
                     playingButton.classList.remove('bg-sky-600', 'hover:bg-sky-500');
                     playingButton.classList.add('bg-green-500', 'hover:bg-green-400');
                     playingButton.textContent = 'Reproduciendo...';
-                    playingButton.closest('.mystery-card').classList.add('ring-2', 'ring-sky-500');
                     nowPlaying.textContent = playingButton.dataset.title;
                     currentPlayingButton = playingButton;
                 }
@@ -186,7 +177,6 @@
                     currentPlayingButton.classList.remove('bg-green-500', 'hover:bg-green-400');
                     currentPlayingButton.classList.add('bg-sky-600', 'hover:bg-sky-500');
                     currentPlayingButton.textContent = currentPlayingButton.dataset.title.split(' ')[1];
-                    currentPlayingButton.closest('.mystery-card').classList.remove('ring-2', 'ring-sky-500');
                     currentPlayingButton = null;
                 }
             });
